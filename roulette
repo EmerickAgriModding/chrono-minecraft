@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Roulette Live</title>
+<style>
+  body { font-family: Arial, sans-serif; text-align: center; background: #111; color: #fff; }
+  #roulette { margin: 50px auto; width: 300px; height: 300px; border-radius: 50%; border: 5px solid #fff; display: flex; align-items: center; justify-content: center; font-size: 24px; position: relative; }
+  #spin { margin-top: 20px; padding: 10px 20px; font-size: 18px; cursor: pointer; }
+  #arrow { position: absolute; top: -20px; left: 50%; transform: translateX(-50%); font-size: 30px; }
+</style>
+</head>
+<body>
+
+<h1>Roulette du Live</h1>
+<div id="roulette">
+  <div id="arrow">⬆️</div>
+  <span id="result">🎲</span>
+</div>
+<button id="spin">Tourner !</button>
+
+<script>
+const items = ["💰 Gagner 10 points", "😱 Défi fou", "🍕 Pizza pour le chat", "🎁 Cadeau surprise", "🕹️ Mini-jeu", "🎤 Chanter 5 secondes"];
+const resultEl = document.getElementById("result");
+const spinBtn = document.getElementById("spin");
+
+spinBtn.addEventListener("click", () => {
+  spinBtn.disabled = true;
+  let spins = 20 + Math.floor(Math.random() * 20); // nombre de tours aléatoires
+  let i = 0;
+  const interval = setInterval(() => {
+    resultEl.textContent = items[i % items.length];
+    i++;
+    if(i > spins){
+      clearInterval(interval);
+      spinBtn.disabled = false;
+    }
+  }, 100);
+});
+</script>
+
+</body>
+</html>
