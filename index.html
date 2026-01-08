@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Chrono Live Minecraft</title>
+<link href="https://fonts.cdnfonts.com/css/minecraft-4" rel="stylesheet">
+
+<style>
+body {
+    margin: 0;
+    background: transparent;
+    font-family: 'Minecraft', monospace;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.panel {
+    background: rgba(0,0,0,0.7);
+    border: 4px solid #2d2d2d;
+    border-radius: 10px;
+    padding: 20px 28px;
+    box-shadow: 0 0 20px #000;
+    text-align: center;
+}
+
+#chrono {
+    font-size: 72px;
+    color: #55FF55;
+    text-shadow: 3px 3px #000;
+    margin-bottom: 12px;
+}
+
+.controls {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+}
+
+button {
+    font-family: 'Minecraft', monospace;
+    font-size: 16px;
+    background: #3a3a3a;
+    color: white;
+    border: 2px solid #1f1f1f;
+    padding: 8px 14px;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #555;
+}
+
+.mode {
+    margin-top: 10px;
+    font-size: 14px;
+    color: #aaa;
+}
+</style>
+</head>
+<body>
+
+<div class="panel">
+    <div id="chrono">00:00</div>
+
+    <div class="controls">
+        <button onclick="startStop()">Start / Pause</button>
+        <button onclick="reset()">Reset</button>
+        <button onclick="switchMode()">Mode</button>
+    </div>
+
+    <div class="mode" id="modeLabel">Mode : Chronomètre</div>
+</div>
+
+<script>
+let seconds = 0;
+let running = false;
+let mode = "chrono"; // chrono | countdown
+let countdownStart = 300; // 5 minutes par défaut
+
+function updateDisplay() {
+    let m = String(Math.floor(seconds / 60)).padStart(2,'0');
+    let s = String(seconds % 60).padStart(2,'0');
+    document.getElementById("chrono").textContent = m + ":" + s;
+}
+
+function startStop() {
+    running = !running;
+}
+
+function reset() {
+    running = false;
+    seconds = (mode === "chrono") ? 0 : countdownStart;
+    updateDisplay();
+}
+
+function switchMode() {
+    running = false;
+    if (mode === "chrono") {
+        mode = "countdown";
+        seconds = countdownStart;
+        document.getElementById("modeLabel").textContent = "Mode : Compte à rebours";
+        document.getElementById("chrono").style.color = "#FF5555";
+    } else {
+        mode = "chrono";
+        seconds = 0;
+        document.getElementById("modeLabel").textContent = "Mode : Chronomètre";
+        document.getElementById("chrono").style.color = "#55FF55";
+    }
+    updateDisplay();
+}
+
+setInterval(() => {
+    if (!running) return;
+
+    if (mode === "chrono") {
+        seconds++;
+    } else {
+        if (seconds > 0) seconds--;
+        if (seconds === 0) running = false;
+    }
+
+    updateDisplay();
+}, 1000);
+
+updateDisplay();
+</script>
+
+</body>
+</html>
